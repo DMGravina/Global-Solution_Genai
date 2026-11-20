@@ -329,8 +329,7 @@ def gerar_markdown_relatorio(comp_chunking: Dict, registros: List[Dict], metrica
 
         linhas.extend([
             f"### {r['id']} — {r['tipo']} [`{status_str}`]",
-            f"- **Pergunta Original:** {r['pergunta']}",
-            f"- **Entrada Sanitizada:** {s['pergunta_sanitizada']}",
+            f"- **Pergunta (registrada com mascaramento LGPD):** {s['pergunta_sanitizada']}",
             f"- **Contexto Recuperado:** {chunks_str}",
             f"- **Alertas de Segurança/Guardrail:** {alertas_str}",
             f"- **Julgamento Crítico:** {r['julgamento']}",

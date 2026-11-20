@@ -7,6 +7,7 @@ import numpy as np
 import requests
 from dotenv import load_dotenv
 from rank_bm25 import BM25Okapi
+from snowballstemmer import stemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 
@@ -44,7 +45,8 @@ def tokenizar_pt(texto: str) -> List[str]:
     nfkd = unicodedata.normalize("NFKD", texto.lower())
     sem_acento = "".join(c for c in nfkd if not unicodedata.combining(c))
     tokens = re.findall(r"\b[a-z0-9_-]{2,}\b", sem_acento)
-    return [t for t in tokens if t not in STOPWORDS_PT]
+    tokens_filtrados = [t for t in tokens if t not in STOPWORDS_PT]
+    return stemmer("portuguese").stemWords(tokens_filtrados)
 
 
 class ChunkerEstrutural:

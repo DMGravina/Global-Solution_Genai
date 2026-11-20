@@ -30,7 +30,7 @@ O corpus foi construído a partir de documentos estruturados inspirados nas **Ca
 - **Justificativa técnica:** Documentos normativos e Cartas de Serviços organizam regras por blocos lógicos (*Descrição*, *Órgão Responsável*, *Prazos/SLA*, *Documentos Necessários*). Fatiar por tamanho fixo arbitrário quebra tabelas de prazos ao meio e separa o nome do serviço de suas regras. A preservação dos metadados (`fonte`, `url`, `data_consulta`, `categoria`) diretamente no objeto `DocumentoChunk` garante rastreabilidade completa até o momento da geração.
 
 ### 2.2. Estratégia de Recuperação (`RetrieverHibrido`)
-- **Método escolhido:** Busca Híbrida combinando **BM25Okapi** (peso `0.45`) e **Vetorização TF-IDF com n-gramas (1, 2) + Similaridade de Cosseno** (peso `0.55`), com `top_k = 3`, filtro opcional por `categoria` e corte rígido por `limiar_confianca = 0.22`.
+- **Método escolhido:** Busca Híbrida combinando **BM25Okapi** (peso `0.45`) e **Vetorização TF-IDF com n-gramas (1, 2) + Similaridade de Cosseno** (peso `0.55`), com stemming Snowball em português para aproximar flexões de palavras entre consulta e corpus. Usa `top_k = 3`, filtro opcional por `categoria` e corte rígido por `limiar_confianca = 0.22`.
 - **Justificativa técnica:** No domínio de serviços públicos, os cidadãos utilizam tanto termos exatos/siglas (`ViaCEP`, `PROT-XXXX`, `Aedes aegypti`, `156`, `Ecopontos`) — onde o **BM25 lexical** se destaca — quanto expressões compostas e variações de fraseado (*"poste apagado na rua"*, *"lixo acumulado na calçada"*) — capturadas pelos **n-gramas vetoriais**. O corte por `limiar_confianca` impede que ruídos irrelevantes cheguem ao gerador.
 
 ### 2.3. Generator, System Prompt e Parâmetros (`GeneratorRAG`)

@@ -15,7 +15,7 @@ O **Assistente Conversacional CitizenTech** integra-se à solução de triagem i
 Diferente de um chatbot genérico, o sistema implementa uma arquitetura **RAG (Retrieval-Augmented Generation)** auditável com:
 - **Base de Conhecimento Rastreável (`corpus/`):** Documentos estruturados baseados nas Cartas de Serviços ao Usuário e Portal gov.br, contendo URLs, órgãos responsáveis, prazos (SLAs) e datas de consulta.
 - **Chunking Estrutural com Overlap:** Preserva seções semânticas e metadados completos em cada trecho.
-- **Retriever Híbrido (BM25 + Vetorial TF-IDF):** Combina busca lexical exata com similaridade de cosseno e limiar mínimo de confiança (`0.22`).
+- **Retriever Híbrido (BM25 + Vetorial TF-IDF):** Combina busca lexical e similaridade de cosseno, com stemming em português para reconhecer variações morfológicas e limiar mínimo de confiança (`0.22`).
 - **Generator com System Prompt Rigoroso:** Exige citação de fonte/URL em todas as respostas e impõe abstenção explícita diante de falta de evidências.
 - **Guardrails de Segurança e LGPD (`seguranca.py`):** Bloqueio contra *Prompt Injection* direto e indireto, mascaramento de PII (CPF, e-mail, telefone) e isolamento de credenciais via `.env`.
 
@@ -24,24 +24,20 @@ Diferente de um chatbot genérico, o sistema implementa uma arquitetura **RAG (R
 ## 2. Estrutura do Repositório
 
 ```text
-citizentech-genai/
-├── .gitignore                          # Bloqueia .env, venv e arquivos temporários
-├── .env.example                        # Modelo de configuração sem credenciais reais
-├── requirements.txt                    # Dependências Python 100% gratuitas
-├── corpus/                             # Base de conhecimento oficial rastreável
-│   ├── 01_infraestrutura_tapa_buraco.md
-│   ├── 02_iluminacao_publica.md
-│   ├── 03_limpeza_urbana_coleta.md
-│   ├── 04_saude_saneamento_dengue.md
-│   └── 05_protocolos_citizentech_faq.md
-├── seguranca.py                        # Guardrails: LGPD, Anti-Injection e Citação
-├── rag_pipeline.py                     # Chunking, Retriever Híbrido e Generator RAG
-├── app_chat.py                         # Interface conversacional interativa (CLI)
-├── avaliar_rag.py                      # Bateria automatizada de 12 testes e métricas
-├── RELATORIO_AVALIACAO.md              # Relatório gerado automaticamente pelos testes
-├── DOCUMENTACAO_CORPUS_E_ARQUITETURA.md # Justificativas técnicas, LGPD, Ética e ODS
-├── ROTEIRO_VIDEO_5MIN.md               # Roteiro da demonstração em vídeo (até 5 min)
-└── README.md                           # Este guia de instalação e uso
+Global-Solution_Genai/
+├── .gitignore                          # Ignora configurações locais do VS Code
+├── README.md                           # Este guia de instalação e uso
+└── citizentech-genai/
+    ├── .gitignore                      # Bloqueia .env, ambientes virtuais e caches
+    ├── .env.example                    # Modelo de configuração sem credenciais reais
+    ├── requirements.txt                # Dependências Python
+    ├── corpus/                         # Base de conhecimento rastreável
+    ├── seguranca.py                    # Guardrails: LGPD, injection e citação
+    ├── rag_pipeline.py                 # Chunking, Retriever Híbrido e Generator RAG
+    ├── app_chat.py                     # Interface conversacional interativa (CLI)
+    ├── avaliar_rag.py                  # Bateria automatizada de 12 testes e métricas
+    ├── DOCUMENTACAO_CORPUS_E_ARQUITETURA.md
+    └── RELATORIO_AVALIACAO.md          # Gerado por avaliar_rag.py
 ```
 
 ---
@@ -95,5 +91,5 @@ Digite suas perguntas no terminal para visualizar em tempo real os trechos recup
 ---
 
 ## 4. Documentação Complementar
-- **Justificativas Técnicas, LGPD e ODS:** Consulte [`DOCUMENTACAO_CORPUS_E_ARQUITETURA.md`](DOCUMENTACAO_CORPUS_E_ARQUITETURA.md).
-- **Evidências de Testes e Métricas:** Consulte [`RELATORIO_AVALIACAO.md`](RELATORIO_AVALIACAO.md).
+- **Justificativas Técnicas, LGPD e ODS:** Consulte [`DOCUMENTACAO_CORPUS_E_ARQUITETURA.md`](citizentech-genai/DOCUMENTACAO_CORPUS_E_ARQUITETURA.md).
+- **Evidências de Testes e Métricas:** Geradas em `citizentech-genai/RELATORIO_AVALIACAO.md` ao executar a avaliação.
